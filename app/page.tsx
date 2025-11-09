@@ -104,14 +104,15 @@ export default function Home() {
         </div>
         <div className="messages">
           {messages.map((msg: Message, index: number) => {
-            // 只有最新的bot消息且包含～或~时才显示脸红
+            // 只有最新的bot消息（非Typing）且包含～或~时才显示脸红
             const isLatestBotMessage = msg.sender === 'bot' && 
+              msg.content !== 'Typing...' &&
               index === latestBotMessageIndex && 
               msg.shouldBlush;
             
             return (
               <div key={index} className={`message-wrapper ${msg.sender}-message-wrapper`}>
-                {msg.sender === 'bot' && (
+                {msg.sender === 'bot' && msg.content !== 'Typing...' && (
                   <div className={`message-avatar ${isLatestBotMessage ? 'blush' : ''}`}>
                     <img src="/robot-avatar.svg" alt="Arin" className="avatar-img" />
                   </div>
@@ -147,4 +148,3 @@ export default function Home() {
     </main>
   );
 }
-
